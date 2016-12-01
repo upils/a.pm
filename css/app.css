@@ -1,13 +1,36 @@
 /* Global personnalisation */
 .top-bar {
-  margin-bottom: 1rem; }
+  margin-bottom: 1rem;
+  }
 .row {
-  max-width: 75rem;  }
-
-body {
-      background-color: #020d20;
+  max-width: 75rem;
   }
 
+body {
+  background-color: #020d20;
+  }
+
+.mode-selector {
+  margin-bottom: 50px;
+}
+
+.commander {
+  margin: 0 auto;
+  display: block;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.img-commander {
+  width:30%;
+  margin: 0 auto;
+}
+
+.img-campaign {
+  margin: auto;
+  display: block;
+  width:100%;
+}
 
 /* Left panel to choose unit or building */
 .unit-selector {
