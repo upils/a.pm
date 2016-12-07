@@ -3,21 +3,20 @@ $(document).on("keypress", function (e) {
     console.log(String.fromCharCode(e.which));
 });
 
+$(window).bind("load", function() {
+   getUnitsBuildings();
+});
 
 // Let the user download the resulting file
 function downloadFile(text) {
   var element = document.createElement('a');
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileBuilder()));
   element.setAttribute('download', 'perso.SC2Hotkeys');
-
   element.style.display = 'none';
   document.body.appendChild(element);
-
   element.click();
-
   document.body.removeChild(element);
 }
-
 
 // Store the conf file in localStorage as a stringify JSON
 function fileGeter() {
@@ -46,7 +45,7 @@ function fileGeter() {
   reader.readAsText(selectedFile, 'UTF-8');
 }
 
-
+//Build the conf file
 function fileBuilder(){
   var retrievedConf = JSON.parse(localStorage.getItem("confFile"));
   var content = "[Settings]\r\n\r\n[Hotkeys]";
@@ -58,3 +57,20 @@ function fileBuilder(){
   return content;
 }
 
+//Get GET parameter from URL
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+//Get units and buildins list and info to display
+function getUnitsBuildings {
+
+}
