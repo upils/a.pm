@@ -5,6 +5,7 @@ $(document).on("keypress", function (e) {
 
 $(window).bind("load", function() {
    getUnitsBuildings();
+   getSelectedMode();
 });
 
 // Let the user download the resulting file
@@ -58,19 +59,62 @@ function fileBuilder(){
 }
 
 //Get GET parameter from URL
-function getParameterByName(name, url) {
-    if (!url) {
-      url = window.location.href;
+function getAllUrlParams(url) {
+  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+  var obj = {};
+  if (queryString) {
+    queryString = queryString.split('#')[0];
+    // split our query string into its component parts
+    var arr = queryString.split('&');
+    for (var i=0; i<arr.length; i++) {
+      // separate the keys and the values
+      var a = arr[i].split('=');
+      // in case params look like: list[]=thing1&list[]=thing2
+      var paramNum = undefined;
+      var paramName = a[0].replace(/\[\d*\]/, function(v) {
+        paramNum = v.slice(1,-1);
+        return '';
+      });
+
+      // set parameter value (use 'true' if empty)
+      var paramValue = typeof(a[1])==='undefined' ? true : a[1];
+      // (optional) keep case consistent
+      paramName = paramName.toLowerCase();
+      paramValue = paramValue.toLowerCase();
+      // if parameter name already exists
+      if (obj[paramName]) {
+        // convert value to array (if still string)
+        if (typeof obj[paramName] === 'string') {
+          obj[paramName] = [obj[paramName]];
+        }
+        // if no array index number specified...
+        if (typeof paramNum === 'undefined') {
+          // put the value on the end of the array
+          obj[paramName].push(paramValue);
+        }
+        // if array index number specified...
+        else {
+          // put the value at that index number
+          obj[paramName][paramNum] = paramValue;
+        }
+      }
+      // if param name doesn't exist yet, set it
+      else {
+        obj[paramName] = paramValue;
+      }
     }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  return obj;
 }
 
 //Get units and buildins list and info to display
-function getUnitsBuildings {
+function getUnitsBuildings() {
 
+}
+
+function getSelectedMode() {
+  var mode = getAllUrlParams().mode;
+  var race = getAllUrlParams().race;
+  console.log(mode +","+race);
 }
