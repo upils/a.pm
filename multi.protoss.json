@@ -24,20 +24,20 @@
 ]},
 {"buildings":[
   {"name":"assimilator", "img":"assimilator.png"},
-  {"name":"cybernetiscore", "img":"cybernetiscore.png"},
+  {"name":"cyberneticscore", "img":"cyberneticscore.png"},
   {"name":"darkshrine", "img":"darkshrine.png"},
-  {"name":"fleetbacon", "img":"fleetbacon.png"},
+  {"name":"fleetbeacon", "img":"fleetbeacon.png"},
   {"name":"forge", "img":"forge.png"},
   {"name":"gateway", "img":"gateway.png"},
   {"name":"nexus", "img":"nexus.png"},
   {"name":"photoncannon", "img":"photoncannon.png"},
   {"name":"roboticsbay", "img":"roboticsbay.png"},
   {"name":"roboticsfacility", "img":"roboticsfacility.png"},
-  {"name":"stagate", "img":"stagate.png"},
+  {"name":"stargate", "img":"stargate.png"},
   {"name":"templararchive", "img":"templararchive.png"},
   {"name":"twilightcouncil", "img":"twilightcouncil.png"},
-  {"name":"warpgate", "img":"warpgate.png"}
-  {"name":"pylon", "img":"pylon.png"},
+  {"name":"warpgate", "img":"warpgate.png"},
+  {"name":"pylon", "img":"pylon.png"}
 ]},
 {"abilities":[
   {"name":"activatepulsarbeam", "img":"activatepulsarbeam.png", "x":"", "y":""},
