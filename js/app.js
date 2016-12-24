@@ -5,7 +5,7 @@ $(document).on("keypress", function (e) {
 
 $(window).bind("load", function() {
    getUnitsBuildings();
-   getSelectedMode();
+   //console.log(getSelectedMode());
 });
 
 // Let the user download the resulting file
@@ -75,7 +75,6 @@ function getAllUrlParams(url) {
         paramNum = v.slice(1,-1);
         return '';
       });
-
       // set parameter value (use 'true' if empty)
       var paramValue = typeof(a[1])==='undefined' ? true : a[1];
       // (optional) keep case consistent
@@ -104,17 +103,37 @@ function getAllUrlParams(url) {
       }
     }
   }
-
   return obj;
+}
+
+// Fill the HTML with units and buildings
+function fillUnitsBuildings(responseText) {
+  var modeRaceData = JSON.parse(responseText);
+  var containerUnits = document.getElementsByClassName("units")[0];
+  var containerBuildings = document.getElementsByClassName("buildings")[0];
+  console.log(modeRaceData);
+  for(var i = 0; i < modeRaceData[0].units.length; i++) {
+    var unit = modeRaceData[0].units[i];
+    var unitImg = document.createElement("img");
+    unitImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/units/"+unit.img;
+    containerUnits.appendChild(unitImg);
+  }
+  for(var i = 0; i < modeRaceData[1].buildings.length; i++) {
+    var building = modeRaceData[1].buildings[i];
+    var buildingImg = document.createElement("img");
+    buildingImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/buildings/"+building.img;
+    containerBuildings.appendChild(buildingImg);
+  }
 }
 
 //Get units and buildins list and info to display
 function getUnitsBuildings() {
-
-}
-
-function getSelectedMode() {
-  var mode = getAllUrlParams().mode;
-  var race = getAllUrlParams().race;
-  console.log(mode +","+race);
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      fillUnitsBuildings(this.responseText);
+    }
+  };
+  xhttp.open("GET", getAllUrlParams().mode+"."+getAllUrlParams().race+".json", true);
+  xhttp.send();
 }
