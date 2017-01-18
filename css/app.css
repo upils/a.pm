@@ -10,16 +10,6 @@ body {
   background-color: #020d20;
   }
 
-
-/* .reveal {
-  background-color: #020d20;
-}
-
-.reveal h1 {
-    /* background-color: #0a547f;
-    color: #8cddff;
-}
-*/
 .mode-selector {
   margin-bottom: 50px;
 }
@@ -61,7 +51,7 @@ body {
 .unit-selector img{
       width:100%;
       max-width:60px;
-      margin:10px;
+      margin:8px;
   }
 
 .unit-selector .img-selected{
@@ -120,16 +110,36 @@ body {
   -webkit-border-bottom-left-radius:5px;
 }
 
-.keySelected h1 {
-  font-size: 3rem;
+.keySelected h1, h2, h3 {
   color: #8cddff;
-  text-align: center;
 }
 
-.keySelected img{
-  display: block;
-  margin: auto;
+.keySelected h1 {
+  font-size: 2.5rem;
+}
+
+.keySelected h2 {
+  font-size: 2rem;
+}
+
+.keySelected h3 {
+  font-size: 1.5rem;
+}
+
+.keySelected img {
   margin-bottom:20px;
   max-width:200px;
   width:100%;
+}
+
+.keySelected button {
+  margin-bottom:5px;
+  background-color: #020d20;
+  font-size: 1.5rem;
+}
+
+
+.keySelected a {
+  margin-bottom:5px;
+  font-size: 1.5rem;
 }
