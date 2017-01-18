@@ -54,7 +54,7 @@ function fileBuilder(){
   for (var ability in retrievedConf) {
     content = content + "\r\n" + ability + "=" + retrievedConf[ability]
   }
-  console.log(content);
+  //console.log(content);
   return content;
 }
 
@@ -136,4 +136,10 @@ function getUnitsBuildings() {
   };
   xhttp.open("GET", getAllUrlParams().mode+"."+getAllUrlParams().race+".json", true);
   xhttp.send();
+}
+
+function getKey() {
+  var elem = document.getElementById("keyButton");
+  elem.firstChild.data = "Press a key";
+  console.log(elem.firstChild.data);
 }
