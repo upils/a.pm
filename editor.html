@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
@@ -19,7 +19,7 @@
       </div>
       <div class="top-bar-right">
         <ul class="dropdown menu" data-dropdown-menu>
-          <li><button type="button" class="button">Upload Configuration</button></li>
+          <li><button type="button" class="button" data-open="modalUploader">Upload Configuration</button></li>
           <li>
             <button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown no-bullet">Load Preset</button><br>
             <ul id="drop1" data-dropdown-content class="f-dropdown no-bullet" aria-hidden="true">
@@ -33,12 +33,22 @@
       </div>
     </nav>
   </div>
+  <!-- Modale for file "upload" -->
+  <div class="reveal" id="modalUploader" data-reveal>
+    <h1>Choose a File to Upload</h1>
+    <input type="file" id="fileSelector">
+    <button class="alert button" data-close aria-label="Close modal" type="button" onclick="fileGeter()">
+      Send file
+    </button>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <div class="row">
     <div class="medium-4 column">
       <div class="row">
         <div class="unit-selector units">
           <h1>Units</h1>
-          <img class="img-selected" src="img/vcs.png">
         </div>
       </div>
       <div class="row">
@@ -66,6 +76,9 @@
       <img src="img/noicon.png">
       <img src="img/noicon.png">
       <img src="img/noicon.png">
+      <img src="img/noicon.png">
+      <img src="img/noicon.png">
+      <img src="img/noicon.png">
       <div class="keySelected">
         <div class="medium-8 column">
           <h1>Barrier</h1>
@@ -75,10 +88,10 @@
         <div class="medium-4 column">
           <img src="img/stim.png">
         </div>
-        <button class="button expanded" onclick="getKey()" id="keyButton">Dropdown Button</button>
+        <button class="button expanded" id="keyButton">Key</button>
         <div class="button-group expanded">
-          <a class="button">+</a>
-          <a class="button">default</a>
+          <a class="button" onclick="getKey()">+</a>
+          <a class="button" onclick="setDefaultKey()">default</a>
         </div>
       </div>
     </div>
