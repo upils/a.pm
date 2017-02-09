@@ -1,11 +1,25 @@
 $(document).foundation()
+
+//Get keypress to save them
 $(document).on("keypress", function (e) {
+    var elem = document.getElementById("keyButton");
+    elem.firstChild.data = String.fromCharCode(e.which).toUpperCase();
     console.log(String.fromCharCode(e.which));
+    saveKey(String.fromCharCode(e.which));
 });
 
+//Populate the left column
 $(window).bind("load", function() {
    getUnitsBuildings();
    //console.log(getSelectedMode());
+});
+
+// Handle click on units or buildings
+$('body').on('click', '.unit-building', function() {
+    $(".unit-selector img").removeClass('img-selected');
+    $(event.target).addClass('img-selected');
+    loadAbilities($(this).attr('id'));
+    console.log("test");
 });
 
 // Let the user download the resulting file
@@ -41,7 +55,7 @@ function fileGeter() {
       }
     }
     localStorage.setItem("confFile",JSON.stringify(confFile));
-    console.log(confFile);
+    //console.log(confFile);
   };
   reader.readAsText(selectedFile, 'UTF-8');
 }
@@ -111,26 +125,31 @@ function fillUnitsBuildings(responseText) {
   var modeRaceData = JSON.parse(responseText);
   var containerUnits = document.getElementsByClassName("units")[0];
   var containerBuildings = document.getElementsByClassName("buildings")[0];
-  console.log(modeRaceData);
+  //console.log(modeRaceData);
   for(var i = 0; i < modeRaceData[0].units.length; i++) {
     var unit = modeRaceData[0].units[i];
     var unitImg = document.createElement("img");
+    unitImg.className += "unit-building";
+    unitImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + "." + unit.name
     unitImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/units/"+unit.img;
     containerUnits.appendChild(unitImg);
   }
   for(var i = 0; i < modeRaceData[1].buildings.length; i++) {
     var building = modeRaceData[1].buildings[i];
     var buildingImg = document.createElement("img");
+    buildingImg.className += "unit-building";
+    buildingImg.id = getAllUrlParams().mode + "." +getAllUrlParams().race + "." + building.name
     buildingImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/buildings/"+building.img;
     containerBuildings.appendChild(buildingImg);
   }
 }
 
-//Get units and buildins list and info to display
+//Get units and buildings list and info to display
 function getUnitsBuildings() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+      localStorage.setItem("mode.race",this.responseText);
       fillUnitsBuildings(this.responseText);
     }
   };
@@ -138,8 +157,13 @@ function getUnitsBuildings() {
   xhttp.send();
 }
 
-function getKey() {
-  var elem = document.getElementById("keyButton");
-  elem.firstChild.data = "Press a key";
-  console.log(elem.firstChild.data);
+//Save the selected key in the file
+function saveKey(key) {
+
+}
+
+// Load abilities for a unit or building in a specific mode
+function loadAbilities(id) {
+  var modeRace = JSON.parse(localStorage.getItem("mode.race"));
+
 }
