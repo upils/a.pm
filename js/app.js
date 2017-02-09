@@ -19,7 +19,7 @@ $('body').on('click', '.unit-building', function() {
     $(".unit-selector img").removeClass('img-selected');
     $(event.target).addClass('img-selected');
     loadAbilities($(this).attr('id'));
-    console.log("test");
+    //console.log($(this).attr('id').split(".")[0]);
 });
 
 // Let the user download the resulting file
@@ -164,6 +164,26 @@ function saveKey(key) {
 
 // Load abilities for a unit or building in a specific mode
 function loadAbilities(id) {
-  var modeRace = JSON.parse(localStorage.getItem("mode.race"));
+  var mode = id.split(".")[0];
+  var race = id.split(".")[1];
+  var unit = id.split(".")[2];
+  var modeRaceData = JSON.parse(localStorage.getItem("mode.race"));
+  var selectedAbilitesList = modeRaceData[0].units.filter(function(item) { return item.name === unit; })[0].abilities;
+  //console.log(selectedAbilitesList);
+  var abilities = modeRaceData[2].abilities;
+  var containerAbilities = document.getElementsByClassName("abilites")[0];
+
+  //console.log(abilities);
+  for (var i = 0; i < modeRaceData[2].abilities.length; i++) {
+    var ability = modeRaceData[2].abilities[i];
+    console.log(ability.img);
+    var abilityImgLocation = abilities.filter(function(item) { return item.name === ability.name; })
+    console.log(abilityImgLocation);
+    var abilityImg = document.createElement("img");
+    abilityImg.className += "ability";
+    abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+ability.img;
+    containerAbilities.appendChild(abilityImg);
+  }
+
 
 }
