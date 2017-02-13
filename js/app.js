@@ -15,12 +15,36 @@ $(window).bind("load", function() {
 });
 
 // Handle click on units or buildings
-$('body').on('click', '.unit-building', function() {
-    $(".unit-selector img").removeClass('img-selected');
-    $(event.target).addClass('img-selected');
-    loadAbilities($(this).attr('id'));
-    //console.log($(this).attr('id').split(".")[0]);
+$('body').on('click', '.unit-building', function(e) {
+
+  //Define a event for firefox
+  if( !e ) e = window.event;
+
+  //Clean the previous element
+  $(".unit-selector img").removeClass('img-selected');
+  $("img.ability").remove();
+
+  $(e.target).addClass('img-selected');
+  loadAbilities($(this).attr('id'));
+  //console.log($(this).attr('id').split(".")[0]);
 });
+
+//Handle click on an ability to display it's info in the key selector
+$('body').on('click', '.ability', function(e) {
+
+  //Define a event for firefox
+  if( !e ) e = window.event;
+
+  //Clean the key selector - TODO
+  //$(".unit-selector img").removeClass('img-selected');
+  //$("img.ability").remove();
+
+  $(e.target).addClass('img-selected');
+  selectAbility($(this));
+  //console.log($(this).attr('id').split(".")[0]);
+});
+
+
 
 // Let the user download the resulting file
 function downloadFile(text) {
@@ -130,7 +154,7 @@ function fillUnitsBuildings(responseText) {
     var unit = modeRaceData[0].units[i];
     var unitImg = document.createElement("img");
     unitImg.className += "unit-building";
-    unitImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + "." + unit.name
+    unitImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + ".units." + unit.name
     unitImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/units/"+unit.img;
     containerUnits.appendChild(unitImg);
   }
@@ -138,7 +162,7 @@ function fillUnitsBuildings(responseText) {
     var building = modeRaceData[1].buildings[i];
     var buildingImg = document.createElement("img");
     buildingImg.className += "unit-building";
-    buildingImg.id = getAllUrlParams().mode + "." +getAllUrlParams().race + "." + building.name
+    buildingImg.id = getAllUrlParams().mode + "." +getAllUrlParams().race + ".buildings." + building.name
     buildingImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/buildings/"+building.img;
     containerBuildings.appendChild(buildingImg);
   }
@@ -164,26 +188,43 @@ function saveKey(key) {
 
 // Load abilities for a unit or building in a specific mode
 function loadAbilities(id) {
+  //Get stored data
   var mode = id.split(".")[0];
   var race = id.split(".")[1];
-  var unit = id.split(".")[2];
+  var type = id.split(".")[2];
+  var uOrB = id.split(".")[3];
   var modeRaceData = JSON.parse(localStorage.getItem("mode.race"));
-  var selectedAbilitesList = modeRaceData[0].units.filter(function(item) { return item.name === unit; })[0].abilities;
+
+  if ( type === "units") {
+    var selectedAbilitesList = modeRaceData[0].units.filter(function(item) { return item.name === uOrB; })[0].abilities;
+  }
+  else if ( type === "buildings") {
+    var selectedAbilitesList = modeRaceData[1].buildings.filter(function(item) { return item.name === uOrB; })[0].abilities;
+  }
+  else {
+    console.log("The type specified is unknown !");
+  }
   //console.log(selectedAbilitesList);
   var abilities = modeRaceData[2].abilities;
   var containerAbilities = document.getElementsByClassName("abilites")[0];
 
   //console.log(abilities);
-  for (var i = 0; i < modeRaceData[2].abilities.length; i++) {
-    var ability = modeRaceData[2].abilities[i];
-    console.log(ability.img);
-    var abilityImgLocation = abilities.filter(function(item) { return item.name === ability.name; })
-    console.log(abilityImgLocation);
+  for (var i = 0; i < selectedAbilitesList.length; i++) {
+    var ability = selectedAbilitesList[i];
+    //console.log(ability);
+    var abilityImgLocation = abilities.filter(function(item) { return item.name === ability; })
+    //console.log(abilityImgLocation[0].img);
     var abilityImg = document.createElement("img");
     abilityImg.className += "ability";
-    abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+ability.img;
+    abilityImg.id = ability;
+    abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+abilityImgLocation[0].img;
     containerAbilities.appendChild(abilityImg);
   }
+}
 
-
+function selectAbility(element) {
+  console.log(element.attr('src'));
+  $('.keySelected img').attr('src', element.attr('src'));
+  $('.keySelected h1').text(element.attr('id'));
+  $('.keySelected').attr('id', element.attr('id'));
 }
