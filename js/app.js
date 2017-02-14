@@ -11,12 +11,14 @@ $(document).on("keypress", function (e) {
 //Populate the left column on load
 $(window).bind("load", function() {
    getUnitsBuildings();
+   getDefaultConfFile();
+
 });
 
 // Handle click on units or buildings
 $('body').on('click', '.unit-building', function(e) {
 
-  //Define a event for firefox
+  //Define an event for firefox
   if( !e ) e = window.event;
 
   //Clean the previous element
@@ -32,11 +34,6 @@ $('body').on('click', '.ability', function(e) {
 
   //Define a event for firefox
   if( !e ) e = window.event;
-
-  //Clean the key selector - TODO
-  //$(".unit-selector img").removeClass('img-selected');
-  //$("img.ability").remove();
-
   $(e.target).addClass('img-selected');
   selectAbility($(this));
 });
@@ -54,7 +51,7 @@ function downloadFile(text) {
   document.body.removeChild(element);
 }
 
-// Store the conf file in localStorage as a stringify JSON
+// Store the user conf file in localStorage as a stringify JSON
 function fileGeter() {
   var selectedFile = document.getElementById('fileSelector').files[0];
   var reader = new FileReader();
@@ -75,7 +72,7 @@ function fileGeter() {
         confFile[ability] = pair[1];
       }
     }
-    localStorage.setItem("confFile",JSON.stringify(confFile));
+    localStorage.setItem("userConfFile",JSON.stringify(confFile));
     //console.log(confFile);
   };
   reader.readAsText(selectedFile, 'UTF-8');
@@ -83,7 +80,7 @@ function fileGeter() {
 
 //Build the conf file
 function fileBuilder(){
-  var retrievedConf = JSON.parse(localStorage.getItem("confFile"));
+  var retrievedConf = JSON.parse(localStorage.getItem("userConfFile"));
   var content = "[Settings]\r\n\r\n[Hotkeys]";
 
   for (var ability in retrievedConf) {
@@ -217,7 +214,6 @@ function loadAbilities(id) {
 
 //Display abilities information and let the user assign a hotkey
 function selectAbility(element) {
-  console.log(element.attr('src'));
   $('.keySelected img').attr('src', element.attr('src'));
   var ability = element.attr('id');
   var modeRaceData = JSON.parse(localStorage.getItem("mode.race"));
@@ -226,5 +222,22 @@ function selectAbility(element) {
 
   $('.keySelected h1').text(abilityName);
   $('.keySelected').attr('id', element.attr('id'));
-  displayCurrentKey();
+
+  //Get current hotkey and display it
+
+  var elem = document.getElementById("keyButton");
+  elem.firstChild.data = 'test';
+
+}
+
+//Get the default conf file from the server
+function getDefaultConfFile() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      localStorage.setItem("defaultConfFile",this.responseText);
+    }
+  };
+  xhttp.open("GET", "defaultConfFile.json", true);
+  xhttp.send();
 }
