@@ -208,7 +208,6 @@ function loadAbilities(id) {
     var ability = selectedAbilitesList[i];
     var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
     var abilityImgLocation = abilities.filter(function(item) { return item.id === ability; });
-    console.log(abilityImgLocation);
     var abilityImg = document.createElement("img");
     abilityImg.className += "ability";
     abilityImg.id = ability;
@@ -226,6 +225,15 @@ function selectAbility(element) {
 
   $('.keySelected h1').text(abilityName);
   $('.keySelected').attr('id', element.attr('id'));
+
+  //Get every units sharing the ability selected
+  var unitList = JSON.parse(localStorage.getItem("mode.race"))[0].units;
+  for (var i = 0; i < unitList.length; i++) {
+    for (var j = 0; j < unitList[i].abilities.length; j++) {
+      if (unitList[i].abilities[j] === ability)
+      console.log(unitList[i].name);
+    }
+  }
 
   //Get the default associated hotkey
   var id = $('.keySelected').attr('id');
