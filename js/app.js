@@ -4,13 +4,13 @@ $(document).foundation()
 $(document).on("keypress", function (e) {
     var elem = document.getElementById("keyButton");
     elem.firstChild.data = String.fromCharCode(e.which).toUpperCase();
-    console.log(String.fromCharCode(e.which));
-    saveKey(String.fromCharCode(e.which));
+    saveKey(String.fromCharCode(e.which).toUpperCase());
 });
 
 //Populate the left column on load
 $(window).bind("load", function() {
    getUnitsBuildings();
+   //Load the default conf file
    getDefaultConfFile();
 
 });
@@ -37,8 +37,6 @@ $('body').on('click', '.ability', function(e) {
   $(e.target).addClass('img-selected');
   selectAbility($(this));
 });
-
-
 
 // Let the user download the resulting file
 function downloadFile(text) {
@@ -177,7 +175,12 @@ function getUnitsBuildings() {
 
 //Save the selected key in the file
 function saveKey(key) {
-
+  var id = $('.keySelected').attr('id');
+  var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
+  var abilityName = abilities.filter(function(item) { return item.id === id; })[0].name;
+  var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
+  userConfFile[abilityName] = key;
+  localStorage.setItem("userConfFile",JSON.stringify(userConfFile));
 }
 
 // Load abilities for a unit or building in a specific mode
@@ -203,7 +206,9 @@ function loadAbilities(id) {
 
   for (var i = 0; i < selectedAbilitesList.length; i++) {
     var ability = selectedAbilitesList[i];
-    var abilityImgLocation = abilities.filter(function(item) { return item.id === ability; })
+    var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
+    var abilityImgLocation = abilities.filter(function(item) { return item.id === ability; });
+    console.log(abilityImgLocation);
     var abilityImg = document.createElement("img");
     abilityImg.className += "ability";
     abilityImg.id = ability;
@@ -216,18 +221,18 @@ function loadAbilities(id) {
 function selectAbility(element) {
   $('.keySelected img').attr('src', element.attr('src'));
   var ability = element.attr('id');
-  var modeRaceData = JSON.parse(localStorage.getItem("mode.race"));
-  var abilities = modeRaceData[2].abilities;
+  var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
   var abilityName = abilities.filter(function(item) { return item.id === ability; })[0].name;
 
   $('.keySelected h1').text(abilityName);
   $('.keySelected').attr('id', element.attr('id'));
 
-  //Get current hotkey and display it
-
+  //Get the default associated hotkey
+  var id = $('.keySelected').attr('id');
+  var defaultConfFile = JSON.parse(localStorage.getItem("defaultConfFile"));
+  var abilityName = abilities.filter(function(item) { return item.id === id; })[0].name;
   var elem = document.getElementById("keyButton");
-  elem.firstChild.data = 'test';
-
+  elem.firstChild.data = defaultConfFile[abilityName]
 }
 
 //Get the default conf file from the server
