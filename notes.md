@@ -9,6 +9,8 @@ ProtossGroundArmorLevel1 et les autres niveaux doivent avoir la même valeur.
 - refaire design du key selector
 - réajuster design global
 - arranger abilities sous forme de tableau
+- refaire Presets
+
 ## Fonctions
 - gérer les conflits
 - lister avec quelles unités sont partagées les abilities
