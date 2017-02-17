@@ -178,8 +178,8 @@ function getUnitsBuildings() {
 function saveKey(key) {
   var id = $('.keySelected').attr('id');
   var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
-  var abilityName = abilities.filter(function(item) { return item.id === id; })[0].name;
-  abilityName = abilityName.replace(/\s/g, '');
+  var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
+  console.log(abilityName);
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
   userConfFile[abilityName] = key;
   localStorage.setItem("userConfFile",JSON.stringify(userConfFile));
@@ -236,7 +236,6 @@ function selectAbility(element) {
   for (var i = 0; i < unitList.length; i++) {
     for (var j = 0; j < unitList[i].abilities.length; j++) {
       if (unitList[i].abilities[j] === ability) {
-        console.log(unitList[i].name);
         var ul = document.createElement("ul");
         ul.className += "no-bullet";
         ul.id = "sharing-ul";
@@ -252,7 +251,7 @@ function selectAbility(element) {
   var id = $('.keySelected').attr('id');
   var defaultConfFile = JSON.parse(localStorage.getItem("defaultConfFile"));
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
-  var abilityName = abilities.filter(function(item) { return item.id === id; })[0].name;
+  var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
   var elem = document.getElementById("keyButton");
   var currentDefaultKey = defaultConfFile[abilityName];
   var currentUserKey = defaultConfFile[abilityName];
