@@ -27,6 +27,7 @@ $('body').on('click', '.unit-building', function(e) {
 
   $(e.target).addClass('img-selected');
   loadAbilities($(this).attr('id'));
+  cleanSharing();
 });
 
 //Handle click on an ability to display it's info in the key selector
@@ -178,6 +179,7 @@ function saveKey(key) {
   var id = $('.keySelected').attr('id');
   var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].name;
+  abilityName = abilityName.replace(/\s/g, '');
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
   userConfFile[abilityName] = key;
   localStorage.setItem("userConfFile",JSON.stringify(userConfFile));
@@ -228,21 +230,46 @@ function selectAbility(element) {
 
   //Get every units sharing the ability selected
   var unitList = JSON.parse(localStorage.getItem("mode.race"))[0].units;
+  var sharing = document.getElementById("sharing");
+  cleanSharing();
+
   for (var i = 0; i < unitList.length; i++) {
     for (var j = 0; j < unitList[i].abilities.length; j++) {
-      if (unitList[i].abilities[j] === ability)
-      console.log(unitList[i].name);
+      if (unitList[i].abilities[j] === ability) {
+        console.log(unitList[i].name);
+        var ul = document.createElement("ul");
+        ul.className += "no-bullet";
+        ul.id = "sharing-ul";
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(unitList[i].name));
+        ul.appendChild(li);
+        sharing.appendChild(ul);
+      }
     }
   }
 
   //Get the default associated hotkey
   var id = $('.keySelected').attr('id');
   var defaultConfFile = JSON.parse(localStorage.getItem("defaultConfFile"));
+  var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].name;
   var elem = document.getElementById("keyButton");
-  elem.firstChild.data = defaultConfFile[abilityName]
+  var currentDefaultKey = defaultConfFile[abilityName];
+  var currentUserKey = defaultConfFile[abilityName];
+  if (currentUserKey) {
+    elem.firstChild.data = currentUserKey;
+  }
+  else {
+    elem.firstChild.data = currentDefaultKey;
+  }
 }
 
+function cleanSharing() {
+  var sharing = document.getElementById("sharing");
+  while (sharing.firstChild) {
+      sharing.removeChild(sharing.firstChild);
+  }
+}
 //Get the default conf file from the server
 function getDefaultConfFile() {
   var xhttp = new XMLHttpRequest();
