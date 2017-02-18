@@ -13,5 +13,4 @@ ProtossGroundArmorLevel1 et les autres niveaux doivent avoir la même valeur.
 
 ## Fonctions
 - gérer les conflits
-- lister avec quelles unités sont partagées les abilities
 - trouver un nom pour le projet
