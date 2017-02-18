@@ -147,6 +147,11 @@ function fillUnitsBuildings(responseText) {
     var unit = modeRaceData[0].units[i];
     var unitImg = document.createElement("img");
     unitImg.className += "unit-building";
+    unitImg.className += " has-tip bottom";
+    unitImg.setAttribute('data-tooltip', '');
+    unitImg.setAttribute('aria-haspopup', 'true');
+    unitImg.setAttribute('title', unit.name);
+    unitImg.setAttribute('data-disable-hover', 'false');
     unitImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + ".units." + unit.id
     unitImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/units/"+unit.img;
     containerUnits.appendChild(unitImg);
@@ -155,10 +160,16 @@ function fillUnitsBuildings(responseText) {
     var building = modeRaceData[1].buildings[i];
     var buildingImg = document.createElement("img");
     buildingImg.className += "unit-building";
+    buildingImg.className += " has-tip bottom";
+    buildingImg.setAttribute('data-tooltip', '');
+    buildingImg.setAttribute('aria-haspopup', 'true');
+    buildingImg.setAttribute('title', building.name);
+    buildingImg.setAttribute('data-disable-hover', 'false');
     buildingImg.id = getAllUrlParams().mode + "." +getAllUrlParams().race + ".buildings." + building.id
     buildingImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/buildings/"+building.img;
     containerBuildings.appendChild(buildingImg);
   }
+  $(document).foundation();
 }
 
 //Get units and buildings list and info to display
@@ -181,6 +192,7 @@ function saveKey(key) {
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
   console.log(abilityName);
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
+  console.log(key);
   userConfFile[abilityName] = key;
   localStorage.setItem("userConfFile",JSON.stringify(userConfFile));
 }
@@ -213,6 +225,7 @@ function loadAbilities(id) {
     var abilityImg = document.createElement("img");
     abilityImg.className += "ability";
     abilityImg.id = ability;
+    //console.log(abilityImgLocation[0]);
     abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+abilityImgLocation[0].img;
     containerAbilities.appendChild(abilityImg);
   }
@@ -254,7 +267,9 @@ function selectAbility(element) {
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
   var elem = document.getElementById("keyButton");
   var currentDefaultKey = defaultConfFile[abilityName];
+  console.log(currentDefaultKey);
   var currentUserKey = defaultConfFile[abilityName];
+  console.log(currentUserKey);
   if (currentUserKey) {
     elem.firstChild.data = currentUserKey;
   }
