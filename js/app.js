@@ -35,6 +35,11 @@ $('body').on('click', '.ability', function(e) {
 
   //Define a event for firefox
   if( !e ) e = window.event;
+
+  //Clean the previous element
+  $(".ability").removeClass('img-selected');
+
+  //Add class
   $(e.target).addClass('img-selected');
   selectAbility($(this));
 });
