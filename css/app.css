@@ -58,7 +58,7 @@ body {
 .img-selected{
     box-shadow: 0px 0px 5px 7px #8cddff;
     position:relative;
-    z-index:999;
+    z-index:998;
     -moz-border-radius-topright:5px;
     -moz-border-radius-topleft:5px;
     -moz-border-radius-bottomright:5px;
@@ -153,4 +153,8 @@ body {
 .has-tip {
   border-bottom: none;
   cursor: auto;
+}
+
+.tooltip {
+  z-index:999;
 }
