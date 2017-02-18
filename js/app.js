@@ -28,6 +28,7 @@ $('body').on('click', '.unit-building', function(e) {
   $(e.target).addClass('img-selected');
   loadAbilities($(this).attr('id'));
   cleanSharing();
+  cleanKeySelector();
 });
 
 //Handle click on an ability to display it's info in the key selector
@@ -289,6 +290,14 @@ function cleanSharing() {
       sharing.removeChild(sharing.firstChild);
   }
 }
+
+//Clean the key selector
+function cleanKeySelector() {
+  $('.keySelected h1').text("No ability selected");
+  $('.keySelected').attr('id', '');
+  $('.keySelected img').attr('src', 'img/noicon.png');
+}
+
 //Get the default conf file from the server
 function getDefaultConfFile() {
   var xhttp = new XMLHttpRequest();
