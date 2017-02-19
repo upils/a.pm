@@ -45,6 +45,16 @@ $('body').on('click', '.ability', function(e) {
   selectAbility($(this));
 });
 
+//Handle click on a unit or building sharing the current ability
+$('body').on('click', '#sharing-ul', function(e) {
+
+  //Define a event for firefox
+  if( !e ) e = window.event;
+
+  //Add class
+  console.log($(e.target));
+});
+
 // Let the user download the resulting file
 function downloadFile(text) {
   var element = document.createElement('a');
@@ -146,35 +156,26 @@ function getAllUrlParams(url) {
 // Fill the HTML with units and buildings
 function fillUnitsBuildings(responseText) {
   var modeRaceData = JSON.parse(responseText);
-  var containerUnits = document.getElementsByClassName("units")[0];
-  var containerBuildings = document.getElementsByClassName("buildings")[0];
-  //console.log(modeRaceData);
-  for(var i = 0; i < modeRaceData[0].units.length; i++) {
-    var unit = modeRaceData[0].units[i];
-    var unitImg = document.createElement("img");
-    unitImg.className += "unit-building";
-    unitImg.className += " has-tip bottom";
-    unitImg.setAttribute('data-tooltip', '');
-    unitImg.setAttribute('aria-haspopup', 'true');
-    unitImg.setAttribute('title', unit.name);
-    unitImg.setAttribute('data-disable-hover', 'false');
-    unitImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + ".units." + unit.id
-    unitImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/units/"+unit.img;
-    containerUnits.appendChild(unitImg);
+  var units, buildings;
+  var list = [ "units", "buildings"];
+
+  for (i =0; i < 2; i++) {
+    var uOrBs = Object.keys(modeRaceData[i]);
+    var containerUOrBs = document.getElementsByClassName(uOrBs[0])[0];
+    for(var j = 0; j < modeRaceData[i][uOrBs].length; j++) {
+      var uOrB = modeRaceData[i][uOrBs][j];
+      var uOrBImg = document.createElement("img");
+      uOrBImg.className += "unit-building";
+      uOrBImg.className += " has-tip bottom";
+      uOrBImg.setAttribute('data-tooltip', '');
+      uOrBImg.setAttribute('aria-haspopup', 'true');
+      uOrBImg.setAttribute('title', uOrB.name);
+      uOrBImg.setAttribute('data-disable-hover', 'false');
+      uOrBImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + uOrBs[0] + uOrB.id
+      uOrBImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/"+uOrBs[0]+"/"+uOrB.img;
+      containerUOrBs.appendChild(uOrBImg);
   }
-  for(var i = 0; i < modeRaceData[1].buildings.length; i++) {
-    var building = modeRaceData[1].buildings[i];
-    var buildingImg = document.createElement("img");
-    buildingImg.className += "unit-building";
-    buildingImg.className += " has-tip bottom";
-    buildingImg.setAttribute('data-tooltip', '');
-    buildingImg.setAttribute('aria-haspopup', 'true');
-    buildingImg.setAttribute('title', building.name);
-    buildingImg.setAttribute('data-disable-hover', 'false');
-    buildingImg.id = getAllUrlParams().mode + "." +getAllUrlParams().race + ".buildings." + building.id
-    buildingImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/buildings/"+building.img;
-    containerBuildings.appendChild(buildingImg);
-  }
+}
   $(document).foundation();
 }
 
@@ -256,8 +257,8 @@ function selectAbility(element) {
     for (var j = 0; j < unitList[i].abilities.length; j++) {
       if (unitList[i].abilities[j] === ability) {
         var ul = document.createElement("ul");
-        ul.className += "no-bullet";
-        ul.id = "sharing-ul";
+        ul.className += "no-bullet sharing-ul";
+        ul.id = unitList[i].id;
         var li = document.createElement("li");
         li.appendChild(document.createTextNode(unitList[i].name));
         ul.appendChild(li);
