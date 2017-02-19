@@ -46,13 +46,18 @@ $('body').on('click', '.ability', function(e) {
 });
 
 //Handle click on a unit or building sharing the current ability
-$('body').on('click', '#sharing-ul', function(e) {
+$('body').on('click', '.sharing-ul', function(e) {
 
-  //Define a event for firefox
+  //Define an event for firefox
   if( !e ) e = window.event;
-
-  //Add class
-  console.log($(e.target));
+  //Clean the previous element
+  $(".unit-selector img").removeClass('img-selected');
+  $("img.ability").remove();
+  cleanSharing();
+  var uOrBSelected = document.getElementById($(e.target).attr('id'));
+  uOrBSelected.className += " img-selected";
+  loadAbilities($(e.target).attr('id'));
+  cleanKeySelector();
 });
 
 // Let the user download the resulting file
@@ -206,6 +211,7 @@ function saveKey(key) {
 
 // Load abilities for a unit or building in a specific mode
 function loadAbilities(id) {
+
   //Get stored data
   var mode = id.split(".")[0];
   var race = id.split(".")[1];
@@ -231,7 +237,7 @@ function loadAbilities(id) {
     var abilityImgLocation = abilities.filter(function(item) { return item.id === ability; });
     var abilityImg = document.createElement("img");
     abilityImg.className += "ability";
-    abilityImg.id = ability;
+    abilityImg.id = mode + "." + race + "." + type + "." + ability;
     //console.log(abilityImgLocation[0]);
     abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+abilityImgLocation[0].img;
     containerAbilities.appendChild(abilityImg);
@@ -241,7 +247,10 @@ function loadAbilities(id) {
 //Display abilities information and let the user assign a hotkey
 function selectAbility(element) {
   $('.keySelected img').attr('src', element.attr('src'));
-  var ability = element.attr('id');
+  var mode = element.attr('id').split(".")[0];
+  var race = element.attr('id').split(".")[1];
+  var type = element.attr('id').split(".")[2];
+  var ability = element.attr('id').split(".")[3];
   var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
   var abilityName = abilities.filter(function(item) { return item.id === ability; })[0].name;
 
@@ -258,8 +267,8 @@ function selectAbility(element) {
       if (unitList[i].abilities[j] === ability) {
         var ul = document.createElement("ul");
         ul.className += "no-bullet sharing-ul";
-        ul.id = unitList[i].id;
         var li = document.createElement("li");
+        li.id = getAllUrlParams().mode + "." + getAllUrlParams().race + "." + type + "." + unitList[i].id
         li.appendChild(document.createTextNode(unitList[i].name));
         ul.appendChild(li);
         sharing.appendChild(ul);
@@ -268,15 +277,13 @@ function selectAbility(element) {
   }
 
   //Get the default associated hotkey
-  var id = $('.keySelected').attr('id');
+  var id = $('.keySelected').attr('id').split(".")[3];
   var defaultConfFile = JSON.parse(localStorage.getItem("defaultConfFile"));
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
   var elem = document.getElementById("keyButton");
   var currentDefaultKey = defaultConfFile[abilityName];
-  console.log(currentDefaultKey);
   var currentUserKey = defaultConfFile[abilityName];
-  console.log(currentUserKey);
   if (currentUserKey) {
     elem.firstChild.data = currentUserKey;
   }
