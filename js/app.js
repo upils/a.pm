@@ -171,7 +171,7 @@ function fillUnitsBuildings(responseText) {
       uOrBImg.setAttribute('aria-haspopup', 'true');
       uOrBImg.setAttribute('title', uOrB.name);
       uOrBImg.setAttribute('data-disable-hover', 'false');
-      uOrBImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + uOrBs[0] + uOrB.id
+      uOrBImg.id = getAllUrlParams().mode + "." + getAllUrlParams().race + "." + uOrBs[0] + "." + uOrB.id
       uOrBImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/"+uOrBs[0]+"/"+uOrB.img;
       containerUOrBs.appendChild(uOrBImg);
   }
