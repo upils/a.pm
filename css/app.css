@@ -158,3 +158,17 @@ body {
 .tooltip {
   z-index:999;
 }
+
+.ability-display {
+  position: relative;
+  display: inline-block
+}
+
+.ability-display h2 {
+  position: absolute;
+  font-size: 2rem;
+  color: grey;
+  font-weight: bold;
+  top: 3px;
+  left: 5px;
+}
