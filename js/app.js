@@ -233,12 +233,21 @@ function loadAbilities(id) {
     var ability = selectedAbilitesList[i];
     var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
     var abilityImgLocation = abilities.filter(function(item) { return item.id === ability; });
+    var containerAbility = document.createElement("div");
+    containerAbility.className += "ability-display";
     var abilityImg = document.createElement("img");
     abilityImg.className += "ability";
     abilityImg.id = mode + "." + race + "." + type + "." + ability;
     //console.log(abilityImgLocation[0]);
     abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+abilityImgLocation[0].img;
-    containerAbilities.appendChild(abilityImg);
+    //Add hotkey in the left up corner
+    var key = getHotkey(ability);
+    console.log(key);
+    var currentHotkey = document.createElement("h2");
+    currentHotkey.innerHTML = key;
+    containerAbility.appendChild(currentHotkey);
+    containerAbility.appendChild(abilityImg);
+    containerAbilities.appendChild(containerAbility);
   }
 }
 
@@ -273,20 +282,23 @@ function selectAbility(element) {
       }
     }
   }
+  var key = getHotkey(element.attr('id').split(".")[3]);
+  document.getElementById("keyButton").firstChild.data = key
+}
 
-  //Get the default associated hotkey
-  var id = $('.keySelected').attr('id').split(".")[3];
+//Get the hotkey associated to an ability
+function getHotkey(id) {
+  var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
   var defaultConfFile = JSON.parse(localStorage.getItem("defaultConfFile"));
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
-  var elem = document.getElementById("keyButton");
   var currentDefaultKey = defaultConfFile[abilityName];
   var currentUserKey = userConfFile[abilityName];
   if (currentUserKey) {
-    elem.firstChild.data = currentUserKey;
+    return currentUserKey;
   }
   else {
-    elem.firstChild.data = currentDefaultKey;
+    return currentDefaultKey;
   }
 }
 
