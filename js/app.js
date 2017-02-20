@@ -199,12 +199,10 @@ function getUnitsBuildings() {
 
 //Save the selected key in the file
 function saveKey(key) {
-  var id = $('.keySelected').attr('id');
+  var id = $('.keySelected').attr('id').split(".")[3];
   var abilities = JSON.parse(localStorage.getItem("mode.race"))[2].abilities;
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
-  console.log(abilityName);
   var userConfFile = JSON.parse(localStorage.getItem("userConfFile"));
-  console.log(key);
   userConfFile[abilityName] = key;
   localStorage.setItem("userConfFile",JSON.stringify(userConfFile));
 }
@@ -283,7 +281,7 @@ function selectAbility(element) {
   var abilityName = abilities.filter(function(item) { return item.id === id; })[0].hkeyname;
   var elem = document.getElementById("keyButton");
   var currentDefaultKey = defaultConfFile[abilityName];
-  var currentUserKey = defaultConfFile[abilityName];
+  var currentUserKey = userConfFile[abilityName];
   if (currentUserKey) {
     elem.firstChild.data = currentUserKey;
   }
