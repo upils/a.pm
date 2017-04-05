@@ -167,8 +167,17 @@ body {
 .ability-display h2 {
   position: absolute;
   font-size: 2rem;
-  color: grey;
   font-weight: bold;
+  color: white;
+  z-index:999;
+  top: 3px;
+  left: 5px;
+}
+
+.ability-display blurH2 {
+  color: white;
+  -webkit-filter: blur(3px);
+  z-index:998;
   top: 3px;
   left: 5px;
 }
