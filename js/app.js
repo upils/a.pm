@@ -23,7 +23,8 @@ $('body').on('click', '.unit-building', function(e) {
 
   //Clean the previous element
   $(".unit-selector img").removeClass('img-selected');
-  $("img.ability").remove();
+  //$("img.ability").remove();
+  $(".ability-display").remove();
 
   $(e.target).addClass('img-selected');
   loadAbilities($(this).attr('id'));
@@ -242,9 +243,11 @@ function loadAbilities(id) {
     abilityImg.src = "img/"+getAllUrlParams().mode+"/"+getAllUrlParams().race+"/abilities/"+abilityImgLocation[0].img;
     //Add hotkey in the left up corner
     var key = getHotkey(ability);
-    console.log(key);
+    var currentHotkeyBlur = document.createElement("div");
+    currentHotkeyBlur.className += "ability-display";
     var currentHotkey = document.createElement("h2");
     currentHotkey.innerHTML = key;
+    containerAbility.appendChild(currentHotkeyBlur);
     containerAbility.appendChild(currentHotkey);
     containerAbility.appendChild(abilityImg);
     containerAbilities.appendChild(containerAbility);
