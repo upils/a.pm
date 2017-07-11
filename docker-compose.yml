@@ -1,0 +1,7 @@
+version: '3'
+services:
+  apm:
+    build: .
+    image: eodras/apm
+    ports:
+      - '80:80'
